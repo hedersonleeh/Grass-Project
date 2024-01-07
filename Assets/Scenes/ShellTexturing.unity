@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogMode: 2
+  m_FogDensity: 0.13
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -229,6 +229,7 @@ GameObject:
   - component: {fileID: 854521102}
   - component: {fileID: 854521101}
   - component: {fileID: 854521104}
+  - component: {fileID: 854521105}
   m_Layer: 0
   m_Name: QuadShell
   m_TagString: Untagged
@@ -313,19 +314,181 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a19814a263451b45952abf3c46d54e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pattern: {fileID: 0}
   _ShellMaterial: {fileID: 2100000, guid: c5d46a2860c17644f9525b739e98480f, type: 2}
   _layerCount: 128
   _density: 10000
-  _tickness: 1.96
+  _tickness: 5
   _minNoise: 0.43
   _maxNoise: 1
-  _furLength: 0.692
-  _furDistanceAttenuation: 1.19
-  _curvature: 2.8
-  displacementStrength: 0.199
+  _furLength: 1
+  _furDistanceAttenuation: 3
+  _curvature: 3.9
+  displacementStrength: 0
+  occlusionAttenuation: 5
+  occlusionBias: 0.17
+  _furColor: {r: 0.23314342, g: 0.6981132, b: 0.3006096, a: 1}
+  _furColor2: {r: 1, g: 1, b: 1, a: 0}
+  _heightColor: {r: 0.10005337, g: 0.47463956, b: 0.6886792, a: 0}
+  UpdateMaterial: 0
+--- !u!64 &854521105
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854521099}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &958800212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 958800213}
+  - component: {fileID: 958800218}
+  - component: {fileID: 958800217}
+  - component: {fileID: 958800216}
+  - component: {fileID: 958800215}
+  - component: {fileID: 958800214}
+  m_Layer: 0
+  m_Name: Fur Ball (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &958800213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958800212}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1.4000001}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &958800214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958800212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be55f19fca6368d4180cb2ac75ab987c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _springForce: 1
+  mu: 1
+  k: 20
+  mass: 0.1
+--- !u!114 &958800215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958800212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a19814a263451b45952abf3c46d54e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pattern: {fileID: 2800000, guid: 3f1a20c1782013c4d86ac023f92d765f, type: 3}
+  _ShellMaterial: {fileID: 2100000, guid: c5d46a2860c17644f9525b739e98480f, type: 2}
+  _layerCount: 64
+  _density: 213
+  _tickness: 7.9
+  _minNoise: 0.51
+  _maxNoise: 1
+  _furLength: 0.69
+  _furDistanceAttenuation: 1.12
+  _curvature: 4.57
+  displacementStrength: 0.31
   occlusionAttenuation: 2.28
   occlusionBias: 0.239
-  _furColor: {r: 0, g: 1, b: 0.14563727, a: 1}
+  _furColor: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 1}
+  _furColor2: {r: 0.8396226, g: 0.6856462, b: 0.10614096, a: 0}
+  _heightColor: {r: 0, g: 0, b: 0, a: 0}
+  UpdateMaterial: 0
+--- !u!135 &958800216
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958800212}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &958800217
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958800212}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &958800218
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958800212}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,14 +565,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.065603435, y: -0.06186904, z: 0.004067611, w: 0.9959176}
-  m_LocalPosition: {x: -0.38, y: 5.11, z: -8.98}
+  m_LocalRotation: {x: 0.16280931, y: 0, z: 0, w: 0.98665756}
+  m_LocalPosition: {x: -0.38, y: 3.47, z: -8.98}
   m_LocalScale: {x: 3.17, y: 0.204, z: -3.16}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 7.537, y: -7.11, z: -0.001}
+  m_LocalEulerAnglesHint: {x: 18.74, y: 0, z: 0}
 --- !u!1001 &976762945
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -419,7 +582,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
       propertyPath: m_LocalPosition.x
@@ -473,8 +636,172 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cat_Low
       objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.41913518
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.9079238
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -130.44
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
+--- !u!1 &1208129226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1208129232}
+  - component: {fileID: 1208129231}
+  - component: {fileID: 1208129230}
+  - component: {fileID: 1208129229}
+  - component: {fileID: 1208129228}
+  - component: {fileID: 1208129227}
+  m_Layer: 0
+  m_Name: Fur Ball (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1208129227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208129226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be55f19fca6368d4180cb2ac75ab987c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _springForce: 1
+  mu: 1
+  k: 20
+  mass: 0.1
+--- !u!114 &1208129228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208129226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a19814a263451b45952abf3c46d54e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pattern: {fileID: 2800000, guid: 7d62d303bad90db4db4917f8b94434aa, type: 3}
+  _ShellMaterial: {fileID: 2100000, guid: c5d46a2860c17644f9525b739e98480f, type: 2}
+  _layerCount: 64
+  _density: 213
+  _tickness: 7.9
+  _minNoise: 0.51
+  _maxNoise: 1
+  _furLength: 0.69
+  _furDistanceAttenuation: 1.12
+  _curvature: 4.57
+  displacementStrength: 0.31
+  occlusionAttenuation: 2.28
+  occlusionBias: 0.239
+  _furColor: {r: 1, g: 1, b: 1, a: 1}
+  _furColor2: {r: 0.9150943, g: 0, b: 0.11341591, a: 0}
+  _heightColor: {r: 0, g: 0, b: 0, a: 0}
+  UpdateMaterial: 0
+--- !u!135 &1208129229
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208129226}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1208129230
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208129226}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1208129231
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208129226}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1208129232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208129226}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1.4000001}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1379760730 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8164078558771037576, guid: fa20c7e041701b349abb5dc5c0a87876, type: 3}
@@ -492,11 +819,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a19814a263451b45952abf3c46d54e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pattern: {fileID: 2800000, guid: 4aeb8883e50056c4b8703b641d2e9160, type: 3}
   _ShellMaterial: {fileID: 2100000, guid: c5d46a2860c17644f9525b739e98480f, type: 2}
-  _layerCount: 64
-  _density: 250
+  _layerCount: 32
+  _density: 200
   _tickness: 5
-  _minNoise: 0.3
+  _minNoise: 0.44
   _maxNoise: 0.72
   _furLength: 0.15
   _furDistanceAttenuation: 3
@@ -504,7 +832,10 @@ MonoBehaviour:
   displacementStrength: 0.44
   occlusionAttenuation: 3.14
   occlusionBias: 0.33
-  _furColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 0}
+  _furColor: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 0}
+  _furColor2: {r: 0.3018868, g: 0.2599142, b: 0.18910643, a: 0}
+  _heightColor: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 0}
+  UpdateMaterial: 0
 --- !u!1 &1600909724
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,7 +851,7 @@ GameObject:
   - component: {fileID: 1600909725}
   - component: {fileID: 1600909730}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Fur Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -538,19 +869,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a19814a263451b45952abf3c46d54e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pattern: {fileID: 0}
   _ShellMaterial: {fileID: 2100000, guid: c5d46a2860c17644f9525b739e98480f, type: 2}
-  _layerCount: 128
-  _density: 122
+  _layerCount: 64
+  _density: 150
   _tickness: 7.9
   _minNoise: 0.51
   _maxNoise: 1
   _furLength: 0.692
   _furDistanceAttenuation: 1.19
   _curvature: 2.8
-  displacementStrength: 0.199
+  displacementStrength: 0.31
   occlusionAttenuation: 2.28
   occlusionBias: 0.239
   _furColor: {r: 0.63388276, g: 0.27058828, b: 0.94509804, a: 1}
+  _furColor2: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 0}
+  _heightColor: {r: 0, g: 0, b: 0, a: 0}
+  UpdateMaterial: 0
 --- !u!135 &1600909726
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -621,13 +956,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1600909724}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1.4000001}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1600909730
 MonoBehaviour:
@@ -642,6 +977,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _springForce: 1
-  mu: 2
-  k: 10
-  mass: 2
+  mu: 1
+  k: 20
+  mass: 0.1

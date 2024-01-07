@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class ShellComponent : MonoBehaviour
 {
+    [SerializeField] private Texture _pattern;
     [SerializeField] private Material _ShellMaterial;
     [SerializeField] private int _layerCount;
     [SerializeField] private int _density = 100;
     [SerializeField] private float _tickness;
     [SerializeField] private float _minNoise, _maxNoise;
-    [SerializeField, Range(0f, 1f)] private float _furLength;
+    [SerializeField, Range(0f, 2f)] private float _furLength;
     [SerializeField, Range(0f, 3f)] private float _furDistanceAttenuation;
     [SerializeField, Range(0f, 10f)] private float _curvature;
 
@@ -19,11 +20,14 @@ public class ShellComponent : MonoBehaviour
 
 
     [SerializeField] private Color _furColor;
+    [SerializeField] private Color _furColor2;
+    [SerializeField] private Color _heightColor;
 
     public MeshRenderer[] RedererList { get; private set; }
-
+    public bool UpdateMaterial;
     private void OnEnable()
     {
+        _pattern = _pattern != null ? _pattern : Texture2D.whiteTexture;
         CreateShells();
 
     }
@@ -53,6 +57,8 @@ public class ShellComponent : MonoBehaviour
             obj.material.SetFloat("_Tickness", _tickness);
             obj.material.SetFloat("_Density", _density);
             obj.material.SetColor("_FurBaseColor", _furColor);
+            obj.material.SetColor("_FurBaseColor2", _furColor2);
+            obj.material.SetColor("_HeightColor", _heightColor);
             obj.material.SetFloat("_MinNoise", _minNoise);
             obj.material.SetFloat("_MaxNoise", _maxNoise);
             obj.material.SetFloat("_FurDistanceAttenuation", _furDistanceAttenuation);
@@ -61,12 +67,13 @@ public class ShellComponent : MonoBehaviour
             obj.material.SetFloat("_OcclusionBias", occlusionBias);
             obj.material.SetFloat("_Furlength", _furLength);
             obj.material.SetFloat("_Curvature", _curvature);
+            obj.material.SetTexture("_MainTex", _pattern);
         }
 
     }
     private void Update()
     {
-        if (Time.time % 2 == 0)
+        if (UpdateMaterial)
             UpdateMaterialProperties();
     }
     private void UpdateMaterialProperties()
@@ -79,6 +86,8 @@ public class ShellComponent : MonoBehaviour
             RedererList[i].material.SetFloat("_Tickness", _tickness);
             RedererList[i].material.SetFloat("_Density", _density);
             RedererList[i].material.SetColor("_FurBaseColor", _furColor);
+            RedererList[i].material.SetColor("_FurBaseColor2", _furColor2);
+            RedererList[i].material.SetColor("_HeightColor", _heightColor);
             RedererList[i].material.SetFloat("_MinNoise", _minNoise);
             RedererList[i].material.SetFloat("_MaxNoise", _maxNoise);
             RedererList[i].material.SetFloat("_FurDistanceAttenuation", _furDistanceAttenuation);
@@ -87,6 +96,8 @@ public class ShellComponent : MonoBehaviour
             RedererList[i].material.SetFloat("_OcclusionBias", occlusionBias);
             RedererList[i].material.SetFloat("_Furlength", _furLength);
             RedererList[i].material.SetFloat("_Curvature", _curvature);
+            RedererList[i].material.SetTexture("_MainTex", _pattern);
+
         }
     }
 

@@ -28,20 +28,25 @@ public class FurBall : MonoBehaviour
         _rb.isKinematic = true;
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
         _shell = GetComponent<ShellComponent>();
-        _cameraPlane = new Plane(Camera.main.transform.forward, -1f);
+        _cameraPlane = new Plane(Vector3.forward, -1f);
     }
     Vector3 lastV;
     private void Update()
     {
-        var mousePosition = Input.mousePosition;
-        var ray = Camera.main.ScreenPointToRay(mousePosition);
-        _cameraPlane.Raycast(ray, out var distance);
-        var mouseInWorld = ray.GetPoint(distance);
-
-        if (Input.GetMouseButton(0))
-            _rb.MovePosition(Vector3.Lerp(_rb.position, mouseInWorld, Time.fixedDeltaTime * 10f));
-        _rb.isKinematic = Input.GetMouseButton(0);
+        GrabUpdate();
         //_rb.velocity = Vector3.ClampMagnitude(_rb.velocity, 1);
+
+
+        var vpPos = Camera.main.WorldToViewportPoint(_rb.position);
+
+        if (vpPos.x > 1 || vpPos.y > 1 || vpPos.x < 0 || vpPos.y < 0)
+        {
+            _rb.position = new Vector3(0, 0, _rb.position.z) + (Vector3)Random.insideUnitCircle;
+        }
+
+    }
+    private void FixedUpdate()
+    {
         springX.Mass = mass;
         springX.K = k;
         springX.Mu = mu;
@@ -49,27 +54,22 @@ public class FurBall : MonoBehaviour
         springY.Mass = mass;
         springY.K = k;
         springY.Mu = mu;
-        var releasedButton = Input.GetMouseButtonUp(0);
-        if (releasedButton)
-        {
-            _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, 10f);
 
-        }
-       
+
 
         springX.UpdatePositionAndVelocity(Time.fixedDeltaTime);
         springY.UpdatePositionAndVelocity(Time.fixedDeltaTime);
-
+        var velocityMag = _rb.velocity.magnitude;
         for (int i = 0; i < _shell.RedererList.Length; i++)
         {
 
 
-            if (_rb.velocity.magnitude < 7f)
+            if (velocityMag < 5f)
             {
                 //velocity -= velocity*.1f * Time.deltaTime;
                 var VX = (float)springX.GetVx();
                 var VY = (float)springY.GetVx();
-                _shell.RedererList[i].material.SetVector("_DisplacementDirection", new Vector3(VX, VY, 0));
+                _shell.RedererList[i].material.SetVector("_DisplacementDirection", new Vector3(VX, VY, 0) + Physics.gravity.normalized);
 
             }
 
@@ -77,14 +77,42 @@ public class FurBall : MonoBehaviour
             {
                 springX.SetQ(-lastV.x, 0);
                 springY.SetQ(-lastV.y, 0);
-                _shell.RedererList[i].material.SetVector("_DisplacementDirection", -_rb.velocity.normalized);
+                _shell.RedererList[i].material.SetVector("_DisplacementDirection", -_rb.velocity.normalized + Physics.gravity.normalized);
 
             }
             lastV = _rb.velocity.normalized;
 
         }
+    }
+    bool _grabbed;
+    private void GrabUpdate()
+    {
+        var mousePosition = Input.mousePosition;
+        var ray = Camera.main.ScreenPointToRay(mousePosition);
+        _cameraPlane.Raycast(ray, out var distance);
+        var mouseInWorld = ray.GetPoint(distance);
+        _rb.isKinematic = _grabbed;
+
+        if (_grabbed)
+        {
+            _rb.MovePosition(Vector3.Lerp(_rb.position, mouseInWorld, Time.fixedDeltaTime * 10f));
+        }
 
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (TryGetComponent<Collider>(out var col))
+            {
+                if (col.bounds.Contains(mouseInWorld))
+                    _grabbed = true;
+            }
+        }
 
+        var releasedButton = Input.GetMouseButtonUp(0);
+        if (releasedButton && _grabbed)
+        {
+            _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, 10f);
+            _grabbed = false;
+        }
     }
 }

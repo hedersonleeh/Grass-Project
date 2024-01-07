@@ -14,6 +14,7 @@ Shader "Unlit/ShellShader"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
             #include "Leehbrary.cginc"
@@ -29,11 +30,14 @@ Shader "Unlit/ShellShader"
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-                float3 normal : TEXCOORD1;
+                float3 normal : TEXCOORD2;
+
             };
 
             sampler2D _MainTex;
             float4  _FurBaseColor ;
+            float4  _FurBaseColor2 ;
+            float4  _HeightColor ;
             float4 _MainTex_ST;
             float _LayerIndex;
             float _LayerCount;
@@ -59,28 +63,38 @@ Shader "Unlit/ShellShader"
                 length(float3(unity_ObjectToWorld[0].z, unity_ObjectToWorld[1].z, unity_ObjectToWorld[2].z))  // scale z axis
                 );
             }
+            float WindField(in float2 st)
+            {
+                st = st *_Density;
+                return sin(st.y+ st.x + _Time.y  )*smoothNoise(st,1);
+            }
             v2f vert (appdata v)
             {
                 v2f o;
                 float shellHeight =_LayerIndex/_LayerCount;
                 shellHeight = pow(shellHeight,_FurDistanceAttenuation);
-                v.vertex.xyz += v.normal*_Furlength *shellHeight;
+                v.vertex.xyz +=v.normal*_Furlength *shellHeight;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.normal =normalize(mul(unity_ObjectToWorld,v.normal ));
                 float k = pow(shellHeight, _Curvature);
 
+                v.vertex =mul(unity_ObjectToWorld,v.vertex );
                 v.vertex.xyz += (_DisplacementDirection* k *_DisplacementStrength)/GetWorldScale();
-                v.vertex.xyz += (float3(0,-.28,0)* k)/GetWorldScale();
+                v.vertex =mul(unity_WorldToObject,v.vertex );
+
+                float2 windUv =(v.uv);
+                //  v.uv.y+=_Time.y;
+                v.vertex.xy -=( 0.2* WindField(windUv)*k)/GetWorldScale();
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                
+
                 return o;
             }
             
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // return float4(i.uv,0,1);
+                fixed4 col = tex2D(_MainTex, frac(i.uv *_Density*.01f));
+                
                 float density =_Density;
                 float2 newUV = i.uv * density;
                 uint2 tid = newUV;
@@ -91,10 +105,9 @@ Shader "Unlit/ShellShader"
                 float2 center = (newUV-.5) * 2;
 
                 float circle = length(center );
-
                 float h = _LayerIndex/_LayerCount;
                 if(_LayerIndex <= 0)
-                return 0; 
+                return _HeightColor; 
                 
                 if( circle > _Tickness*(rand-h)) discard;
 
@@ -104,8 +117,12 @@ Shader "Unlit/ShellShader"
                 ambientOcclusion += _OcclusionBias;
                 ambientOcclusion=saturate(ambientOcclusion);
                 // return ndotl;
-                // i.uv.x+= sin(_Time.y)*_FurLength*10;
-                return  _FurBaseColor*ndotl *ambientOcclusion ;
+                // i.uv.x+= sin(_Time.y)*_FurLength*10;       
+                // return col;
+                float4 baseColor =lerp( _FurBaseColor2,_FurBaseColor,col);
+                baseColor = lerp(_HeightColor,baseColor,pow(h,_FurDistanceAttenuation));
+                // return baseColor;
+                return  baseColor*ndotl *ambientOcclusion    ;
             }
             ENDCG
         }
