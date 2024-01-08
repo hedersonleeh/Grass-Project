@@ -1,6 +1,6 @@
 # Grass-Fur Project
 
-This repository is a practice to undestand and study the tecnique of shell texturing also I added a spring motion to the hair movement to make it feel more natural.
+This repository is a practice to undestand and study the technique of Shell Texturing also I added a spring motion to the hair movement to make it feel more natural.
 
 References:
 
