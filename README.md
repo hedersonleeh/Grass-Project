@@ -1,4 +1,6 @@
 # Grass-Fur Project
+Preview video:
+[![](https://github.com/hedersonleeh/Grass-Project/blob/master/Capture.PNG)](https://youtu.be/ENcZt5D2lo0)
 
 This repository is a practice to undestand and study the technique of Shell Texturing,I added more controls on the color and a color by texture also I added a spring motion to the hair movement to make it feel more natural.
 
