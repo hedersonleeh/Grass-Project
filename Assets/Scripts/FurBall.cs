@@ -26,7 +26,8 @@ public class FurBall : MonoBehaviour
 
         _rb = gameObject.AddComponent<Rigidbody>();
         _rb.isKinematic = true;
-        _rb.constraints = RigidbodyConstraints.FreezeRotation;
+        _rb.constraints = RigidbodyConstraints.FreezePositionZ;
+        _rb.angularDrag = 6f;
         _shell = GetComponent<ShellComponent>();
         _cameraPlane = new Plane(Vector3.forward, -1f);
     }
@@ -36,12 +37,14 @@ public class FurBall : MonoBehaviour
         GrabUpdate();
         //_rb.velocity = Vector3.ClampMagnitude(_rb.velocity, 1);
 
-
         var vpPos = Camera.main.WorldToViewportPoint(_rb.position);
-
-        if (vpPos.x > 1 || vpPos.y > 1 || vpPos.x < 0 || vpPos.y < 0)
+        var max = 1;
+        var min = 0f;
+        if (vpPos.x > max || vpPos.y > max || vpPos.x < min || vpPos.y < min)
         {
-            _rb.position = new Vector3(0, 0, _rb.position.z) + (Vector3)Random.insideUnitCircle;
+            vpPos.x = Mathf.Clamp(vpPos.x, min, max);
+            vpPos.y = Mathf.Clamp(vpPos.y, min, max);
+            _rb.position = Camera.main.ViewportToWorldPoint(vpPos);
         }
 
     }
@@ -91,6 +94,19 @@ public class FurBall : MonoBehaviour
         var ray = Camera.main.ScreenPointToRay(mousePosition);
         _cameraPlane.Raycast(ray, out var distance);
         var mouseInWorld = ray.GetPoint(distance);
+        if (Physics.Raycast(ray, out var hit))
+        {
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (hit.collider.TryGetComponent<Collider>(out var col))
+                {
+                    if (col == GetComponent<Collider>())
+                        _grabbed = true;
+                }
+            }
+
+        }
         _rb.isKinematic = _grabbed;
 
         if (_grabbed)
@@ -99,14 +115,7 @@ public class FurBall : MonoBehaviour
         }
 
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (TryGetComponent<Collider>(out var col))
-            {
-                if (col.bounds.Contains(mouseInWorld))
-                    _grabbed = true;
-            }
-        }
+
 
         var releasedButton = Input.GetMouseButtonUp(0);
         if (releasedButton && _grabbed)
